@@ -1,0 +1,21 @@
+assets:
+  - key: spy
+    kind: etf
+    name: SPDR S&P 500 ETF Trust
+    identifiers:
+      yahoo: SPY
+      stooq: spy.us
+
+  - key: novo-b-co
+    kind: equity
+    name: Novo Nordisk A/S B
+    identifiers:
+      yahoo: NOVO-B.CO
+      stooq: novob.dk
+      isin: DK0062498333
+
+  - key: eur-usd
+    kind: fx
+    name: EUR/USD
+    identifiers:
+      yahoo: EURUSD=X
