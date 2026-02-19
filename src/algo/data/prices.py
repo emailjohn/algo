@@ -212,7 +212,7 @@ def load_prices(
     field: str = "adj_close",
     provider_priority: list[Provider] | None = None,
 ) -> pd.DataFrame:
-    provider_priority = provider_priority or ["stooq", "yahoo"]
+    provider_priority = provider_priority or ["yahoo", "stooq"]
 
     series_list: list[pd.Series] = []
 
@@ -233,7 +233,7 @@ def update_all_prices(
     Update caches for all assets in the registry.
     Returns a dict: asset_key -> provider used.
     """
-    provider_priority = provider_priority or ["stooq", "yahoo"]
+    provider_priority = provider_priority or ["yahoo", "stooq"]
 
     used: dict[str, Provider] = {}
 
@@ -278,7 +278,7 @@ def export_canonical_ohlcv(
 
     Writes a single parquet file and returns its path.
     """
-    provider_priority = provider_priority or ["stooq", "yahoo"]
+    provider_priority = provider_priority or ["yahoo", "stooq"]
     path = path or canonical_ohlcv_path()
 
     if asset_keys is None:
