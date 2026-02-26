@@ -198,33 +198,6 @@ def _choose_provider_and_update(
     raise RuntimeError(f"Failed for '{asset_key}'. Last error: {last_err}")
 
 
-def _select_price_field(df: pd.DataFrame, field: str) -> pd.Series:
-    if field in df.columns:
-        return df[field]
-    if field == "adj_close" and "close" in df.columns:
-        return df["close"]
-    raise KeyError(f"Field '{field}' not available. Columns: {list(df.columns)}")
-
-
-def load_prices(
-    asset_keys: list[str],
-    *,
-    field: str = "adj_close",
-    provider_priority: list[Provider] | None = None,
-) -> pd.DataFrame:
-    provider_priority = provider_priority or ["yahoo", "stooq"]
-
-    series_list: list[pd.Series] = []
-
-    for key in asset_keys:
-        _provider, df = _choose_provider_and_update(key, provider_priority)
-
-        s = _select_price_field(df, field).rename(key)
-        series_list.append(s)
-
-    return pd.concat(series_list, axis=1).sort_index()
-
-
 def update_all_prices(
     *,
     provider_priority: list[Provider] | None = None,

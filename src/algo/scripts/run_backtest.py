@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from algo.data.prices import load_canonical_field
+from algo.data.cleaning import load_cleaned_field
 from algo.symbols.registry import list_asset_keys_by_kind
 from algo.backtest.engine_fast import run_backtest_fast_daily
 from algo.backtest.runs import make_run_dir
@@ -47,7 +47,7 @@ def main() -> None:
     assets = list_asset_keys_by_kind(KINDS)
 
     # load prices
-    px = load_canonical_field(FIELD)[assets].sort_index()
+    px = load_cleaned_field(FIELD)[assets].sort_index()
 
     # build weights
     wmat = build_weights(STRATEGY, px)

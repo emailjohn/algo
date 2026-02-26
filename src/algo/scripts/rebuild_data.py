@@ -2,6 +2,7 @@ from pathlib import Path
 
 from algo.config import settings
 from algo.data.prices import update_all_prices, export_canonical_ohlcv
+from algo.data.cleaning import build_cleaned_ohlcv
 
 
 def main() -> None:
@@ -36,6 +37,10 @@ def main() -> None:
     path = export_canonical_ohlcv()
 
     print(f"Done. Canonical written to: {path}")
+
+    print("Building cleaned dataset...")
+    build_cleaned_ohlcv()
+    print("Cleaning complete.")
 
 
 if __name__ == "__main__":

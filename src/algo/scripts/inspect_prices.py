@@ -7,7 +7,7 @@ from algo.data.prices import (
 )
 
 # ============================
-# CONFIG – edit in PyCharm
+# CONFIG
 # ============================
 
 ASSET = "novo-b-co"
