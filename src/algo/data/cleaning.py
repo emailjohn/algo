@@ -1,19 +1,18 @@
 from pathlib import Path
+
 import pandas as pd
-import numpy as np
 
 from algo.config import settings
 from algo.data.prices import load_canonical_ohlcv
-
 
 # ==========================
 # Default parameters
 # ==========================
 
-GLOBAL_FLOOR = pd.Timestamp("2005-01-01") # global start date for all time series
-MINIMUM_DAYS = 1000 # minimum length of a time series for a given asset to be valid
+GLOBAL_FLOOR = pd.Timestamp("2005-01-01")  # global start date for all time series
+MINIMUM_DAYS = 1000  # minimum length of a time series for a given asset to be valid
 EXTREME_THRESHOLD = 0.60
-COVERAGE_LIMIT  = 0.98
+COVERAGE_LIMIT = 0.98
 STABLE_WINDOW = 252
 FFILL_LIMIT = 5
 
@@ -21,6 +20,7 @@ FFILL_LIMIT = 5
 # ==========================
 # Core logic
 # ==========================
+
 
 def ffill_small_gaps_only(s: pd.Series, *, max_gap: int) -> pd.Series:
     """
@@ -48,6 +48,7 @@ def ffill_small_gaps_only(s: pd.Series, *, max_gap: int) -> pd.Series:
     s.loc[fill_mask] = filled.loc[fill_mask]
     return s
 
+
 def _find_auto_start(series: pd.Series) -> pd.Timestamp | None:
     """
     Find first stable start date.
@@ -64,8 +65,8 @@ def _find_auto_start(series: pd.Series) -> pd.Timestamp | None:
     dates = series.index
 
     for i in range(len(dates) - STABLE_WINDOW):
-        window = series.iloc[i: i + STABLE_WINDOW]
-        window_rets = rets.iloc[i + 1: i + STABLE_WINDOW + 1]
+        window = series.iloc[i : i + STABLE_WINDOW]
+        window_rets = rets.iloc[i + 1 : i + STABLE_WINDOW + 1]
 
         coverage = window.notna().mean()
         extreme = (window_rets.abs() > EXTREME_THRESHOLD).any()
@@ -105,7 +106,9 @@ def _clean_single_asset(df: pd.DataFrame, asset: str):
         if col in cleaned.columns:
             cleaned[col] = ffill_small_gaps_only(cleaned[col], max_gap=FFILL_LIMIT)
 
-    price_series_clean = cleaned["adj_close"] if "adj_close" in cleaned.columns else cleaned["close"]
+    price_series_clean = (
+        cleaned["adj_close"] if "adj_close" in cleaned.columns else cleaned["close"]
+    )
 
     # compute stats
     rets = price_series_clean.pct_change()
@@ -126,6 +129,7 @@ def _clean_single_asset(df: pd.DataFrame, asset: str):
 # ==========================
 # Public API
 # ==========================
+
 
 def cleaned_path() -> Path:
     base = settings.data_dir / "cleaned"
@@ -171,19 +175,22 @@ def build_cleaned_ohlcv() -> tuple[pd.DataFrame, pd.DataFrame]:
     # ensure datetime columns are proper dtype
     for col in ["auto_start", "final_start", "last_extreme_date"]:
         if col in eligibility_df.columns:
-            eligibility_df[col] = pd.to_datetime(eligibility_df[col], errors="coerce").dt.strftime("%Y-%m-%d")
-
+            eligibility_df[col] = pd.to_datetime(eligibility_df[col], errors="coerce").dt.strftime(
+                "%Y-%m-%d"
+            )
 
     cleaned.to_parquet(cleaned_path())
     eligibility_df.to_parquet(eligibility_path())
 
     return cleaned, eligibility_df
 
+
 def load_cleaned_ohlcv(*, path: Path | None = None) -> pd.DataFrame:
     path = path or cleaned_path()
     df = pd.read_parquet(path)
     df.index = pd.to_datetime(df.index)
     return df.sort_index()
+
 
 def load_cleaned_field(field: str, *, path: Path | None = None) -> pd.DataFrame:
     df = load_cleaned_ohlcv(path=path)

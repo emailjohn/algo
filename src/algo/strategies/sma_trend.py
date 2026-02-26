@@ -34,6 +34,7 @@ def sma_trend_weights(prices: pd.DataFrame, *, window: int = 200) -> Weights:
     w = 1.0 / len(selected)
     return {asset: w for asset in selected}
 
+
 def sma_trend_weights_by_day(prices: pd.DataFrame, *, window: int = 200) -> pd.DataFrame:
     """
     Compute target weights each day (simple loop; fine for research).

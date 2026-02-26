@@ -11,7 +11,6 @@ import pandas as pd
 from algo.data.prices import load_canonical_field
 from algo.symbols.registry import list_asset_keys
 
-
 # ============================
 # CONFIG – edit in PyCharm
 # ============================
@@ -44,7 +43,9 @@ def find_extreme_returns(prices: pd.Series, *, lower: float, upper: float) -> pd
     return r[(r < lower) | (r > upper)].dropna()
 
 
-def suggest_clean_start(extreme_dates: pd.DatetimeIndex, *, search_from: str) -> pd.Timestamp | None:
+def suggest_clean_start(
+    extreme_dates: pd.DatetimeIndex, *, search_from: str
+) -> pd.Timestamp | None:
     """
     Suggest the first date after which there are no extreme dates.
     If there are no extremes, returns None.
@@ -65,9 +66,9 @@ def main() -> None:
     px = load_canonical_field(FIELD).sort_index()
 
     if START is not None:
-        px = px.loc[pd.to_datetime(START):]
+        px = px.loc[pd.to_datetime(START) :]
     if END is not None:
-        px = px.loc[:pd.to_datetime(END)]
+        px = px.loc[: pd.to_datetime(END)]
 
     assets = ASSETS if ASSETS is not None else list_asset_keys()
 
@@ -121,7 +122,9 @@ def main() -> None:
                 "best_date": best_date.date().isoformat(),
                 "first_extreme": ext.index.min().date().isoformat(),
                 "last_extreme": ext.index.max().date().isoformat(),
-                "suggest_clean_start": clean_start.date().isoformat() if clean_start is not None else None,
+                "suggest_clean_start": clean_start.date().isoformat()
+                if clean_start is not None
+                else None,
             }
         )
 

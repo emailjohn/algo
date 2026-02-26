@@ -1,15 +1,10 @@
-import sys
-from pathlib import Path
-
 import pandas as pd
 
-from algo.data.cleaning import load_cleaned_field
-from algo.symbols.registry import list_asset_keys_by_kind
 from algo.backtest.engine_fast import run_backtest_fast_daily
 from algo.backtest.runs import make_run_dir
-
+from algo.data.cleaning import load_cleaned_field
 from algo.strategies.sma_trend import sma_trend_weights_by_day
-
+from algo.symbols.registry import list_asset_keys_by_kind
 
 # ============================
 # CONFIG (edit this in PyCharm)

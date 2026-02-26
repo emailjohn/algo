@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def run_backtest_fast_daily(
     prices: pd.DataFrame,
     weights_by_day: pd.DataFrame,
@@ -22,7 +23,7 @@ def run_backtest_fast_daily(
 
     # optional: clip history
     if start_date is not None:
-        prices = prices.loc[pd.to_datetime(start_date):]
+        prices = prices.loc[pd.to_datetime(start_date) :]
 
     rets = prices.pct_change()
 

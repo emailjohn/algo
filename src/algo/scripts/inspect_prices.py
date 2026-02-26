@@ -12,11 +12,11 @@ from algo.data.prices import (
 
 ASSET = "novo-b-co"
 
-MODE = "canonical"   # "canonical" or "raw"
-PROVIDER = "yahoo"   # only used if MODE == "raw"
+MODE = "canonical"  # "canonical" or "raw"
+PROVIDER = "yahoo"  # only used if MODE == "raw"
 
 FIELD = "adj_close"  # used if canonical field mode
-SHOW = "ohlcv"       # "field" or "ohlcv"
+SHOW = "ohlcv"  # "field" or "ohlcv"
 
 START = "2010-05-10"
 END = None
@@ -56,9 +56,9 @@ def inspect():
 
     # date slicing
     if START is not None:
-        out = out.loc[pd.to_datetime(START):]
+        out = out.loc[pd.to_datetime(START) :]
     if END is not None:
-        out = out.loc[:pd.to_datetime(END)]
+        out = out.loc[: pd.to_datetime(END)]
 
     if HEAD:
         print(out.head(HEAD))

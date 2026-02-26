@@ -69,6 +69,7 @@ def list_asset_keys() -> list[str]:
     reg = get_registry()
     return [a.key for a in reg.assets]
 
+
 def list_asset_keys_by_kind(kinds: set[str]) -> list[str]:
     reg = get_registry()
     return [a.key for a in reg.assets if a.kind in kinds]
