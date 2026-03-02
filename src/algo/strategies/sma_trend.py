@@ -1,53 +1,25 @@
 import pandas as pd
 
-from algo.core.types import Weights
-
-
-def sma_trend_weights(prices: pd.DataFrame, *, window: int = 200) -> Weights:
-    """
-    For the latest date in `prices`, include asset if price > SMA(window).
-    Equal-weight included assets. If none included, returns {}.
-    """
-    if prices.empty:
-        raise ValueError("prices is empty")
-
-    sma = prices.rolling(window=window, min_periods=window).mean()
-
-    latest_price = prices.iloc[-1]
-    latest_sma = sma.iloc[-1]
-
-    selected: list[str] = []
-
-    for asset in prices.columns:
-        p = latest_price[asset]
-        m = latest_sma[asset]
-
-        if pd.isna(p) or pd.isna(m):
-            continue
-
-        if p > m:
-            selected.append(asset)
-
-    if not selected:
-        return {}
-
-    w = 1.0 / len(selected)
-    return {asset: w for asset in selected}
-
-
 def sma_trend_weights_by_day(prices: pd.DataFrame, *, window: int = 200) -> pd.DataFrame:
     """
     Compute target weights each day (simple loop; fine for research).
     Returns a DataFrame aligned to prices: date × asset.
     """
     prices = prices.sort_index()
-    out = pd.DataFrame(0.0, index=prices.index, columns=prices.columns)
 
-    for i in range(len(prices.index)):
-        hist = prices.iloc[: i + 1]
-        w = sma_trend_weights(hist, window=window)
-        dt = prices.index[i]
-        for k, v in w.items():
-            out.loc[dt, k] = v
+    # 1. Udregn 200 dages snit for HELE dataframen på én gang
+    sma = prices.rolling(window=window, min_periods=window).mean()
 
-    return out
+    # 2. Skab en Sand/Falsk matrix: Hvilke aktier er over deres snit?
+    # Bliver til 1.0 (Sand) og 0.0 (Falsk)
+    signal_matrix = (prices > sma).astype(float)
+
+    # 3. Fordel vægten ligeligt
+    # Hvor mange aktier er "Sand" i dag? (sum langs rækken)
+    active_count = signal_matrix.sum(axis=1)
+
+    # Divider 1.0 (Sand) med antallet af aktive aktier for at få %-vægt.
+    # Hvis 0 aktier er aktive, erstatter vi division-med-nul (NaN) med 0.
+    weights_matrix = signal_matrix.div(active_count, axis=0).fillna(0.0)
+
+    return weights_matrix

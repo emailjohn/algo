@@ -1,21 +1,98 @@
 assets:
+  # ETFs
   - key: spy
+    name: SPDR S&P 500 ETF
     kind: etf
-    name: SPDR S&P 500 ETF Trust
-    identifiers:
-      yahoo: SPY
-      stooq: spy.us
+    identifiers: { yahoo: SPY }
+  - key: qqq
+    name: Invesco QQQ
+    kind: etf
+    identifiers: { yahoo: QQQ }
+  - key: dia
+    name: Dow Jones ETF
+    kind: etf
+    identifiers: { yahoo: DIA }
 
-  - key: novo-b-co
+  # Tech & Growth
+  - key: aapl
+    name: Apple
     kind: equity
-    name: Novo Nordisk A/S B
-    identifiers:
-      yahoo: NOVO-B.CO
-      stooq: novob.dk
-      isin: DK0062498333
+    identifiers: { yahoo: AAPL }
+  - key: msft
+    name: Microsoft
+    kind: equity
+    identifiers: { yahoo: MSFT }
+  - key: googl
+    name: Alphabet
+    kind: equity
+    identifiers: { yahoo: GOOGL }
+  - key: amzn
+    name: Amazon
+    kind: equity
+    identifiers: { yahoo: AMZN }
+  - key: tsla
+    name: Tesla
+    kind: equity
+    identifiers: { yahoo: TSLA }
+  - key: nvda
+    name: Nvidia
+    kind: equity
+    identifiers: { yahoo: NVDA }
+  - key: meta
+    name: Meta Platforms
+    kind: equity
+    identifiers: { yahoo: META }
+  - key: nflx
+    name: Netflix
+    kind: equity
+    identifiers: { yahoo: NFLX }
 
-  - key: eur-usd
-    kind: fx
-    name: EUR/USD
-    identifiers:
-      yahoo: EURUSD=X
+  # Finance & Value
+  - key: jpm
+    name: JPMorgan Chase
+    kind: equity
+    identifiers: { yahoo: JPM }
+  - key: bac
+    name: Bank of America
+    kind: equity
+    identifiers: { yahoo: BAC }
+  - key: v
+    name: Visa
+    kind: equity
+    identifiers: { yahoo: V }
+  - key: ma
+    name: Mastercard
+    kind: equity
+    identifiers: { yahoo: MA }
+
+  # Healthcare & Consumer
+  - key: jnj
+    name: Johnson & Johnson
+    kind: equity
+    identifiers: { yahoo: JNJ }
+  - key: unh
+    name: UnitedHealth
+    kind: equity
+    identifiers: { yahoo: UNH }
+  - key: wmt
+    name: Walmart
+    kind: equity
+    identifiers: { yahoo: WMT }
+  - key: pg
+    name: Procter & Gamble
+    kind: equity
+    identifiers: { yahoo: PG }
+  - key: hd
+    name: Home Depot
+    kind: equity
+    identifiers: { yahoo: HD }
+  - key: dis
+    name: Disney
+    kind: equity
+    identifiers: { yahoo: DIS }
+
+  # Danske
+  - key: novo-b-co
+    name: Novo Nordisk B
+    kind: equity
+    identifiers: { yahoo: NOVO-B.CO }
